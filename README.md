@@ -4,4 +4,6 @@ An experiment in non-addictive social network that facilitates actually meeting 
 
 ### Notes to self
 To restart the server:
-``` PID=$(systemctl show --value -p MainPID gunicorn.service) && kill -HUP $PID
+```
+PID=$(systemctl show --value -p MainPID gunicorn.service) && kill -HUP $PID
+```
