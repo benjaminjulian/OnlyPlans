@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+    {% block content %} 
+        {% if user.is_authenticated %}
+            <p>Hæ, <a href="accounts/{{ user.username }}">{{  name }}</a>!</p>
+            <h4>Plön:</h4>
+            <ul>
+            {% for i in list %}
+                <li>{{ i }}</li>
+            {% endfor %}
+        {% else %}
+                Ekkert að frétta!
+        {% endif %}
+    {% endblock %} 

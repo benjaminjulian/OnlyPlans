@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block title %}Andlitslyfting{% endblock title %}
+
+{% block content %} 
+    <h2>Þú um þig</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Uppfæra</button>
+        <br><br>
+        <p><a href="/">Til baka</a></p>
+        <p><a href="{% url 'logout' %}">Skrá mig út</a></p>
+    </form>
+{% endblock content %}
