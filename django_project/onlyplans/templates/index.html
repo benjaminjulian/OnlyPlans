@@ -3,12 +3,18 @@
     {% block content %} 
         {% if user.is_authenticated %}
             <p>Hæ, <a href="accounts/{{ user.username }}">{{  name }}</a>!</p>
-            <h4>Plön:</h4>
-            <ul>
-            {% for i in list %}
-                <li>{{ i }}</li>
-            {% endfor %}
+            <p>Vilt þú <a href="events">skrá nýjan atburð</a>?</p>
+            {% if plans|length > 0 %}
+                <h4>Komandi atburðir:</h4>
+                <ul>
+                {% for plan in plans %}
+                    <li><a href="events/{{ plan.id }}">{{ plan.title }}</a> - <small><em>{{ plan.when }}</em></small></li>
+                {% endfor %}
+            {% else %}
+                <p><strong>Engin plön skráð!</strong></p>
+                <a href="events">Skráðu nýtt plan hér.</a>
+            {% endif %}
         {% else %}
-                Ekkert að frétta!
+                Innskráningu, takk!
         {% endif %}
     {% endblock %} 

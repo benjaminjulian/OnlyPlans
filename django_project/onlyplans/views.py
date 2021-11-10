@@ -3,14 +3,16 @@ from onlyplans.models import FriendMgmt, Profile
 from django.db import models
 from onlyplans.forms import FriendMgmtForm
 from django.contrib.auth.decorators import login_required
+from onlyplans.models import OnlyPlan
 
 # Create your views here.
 def index(request):
     if request.user.is_authenticated:
+        plans = OnlyPlan.objects.filter().order_by("when")
         if request.user.get_full_name() != "":
-            context = {'name': request.user.get_full_name()}
+            context = { 'name': request.user.get_full_name(), 'plans': plans }
         else:
-            context = {'name': request.user.username}
+            context = { 'name': request.user.username, 'plans': plans }
         return render(request, "index.html", context)
     else:
         return HttpResponseRedirect('/accounts/')

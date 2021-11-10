@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
+
+<h2>{{ event.title }}</h2>
+{{ event.when }}
+<br>
+<div style="width: 400px; height: 400px;" id="osm-map"></div>
+
+<script>
+    var element = document.getElementById('osm-map');
+    var map = L.map(element);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OSM</a>'
+    }).addTo(map);
+    map.setView(L.latLng('{{ event.location_latitude }}', '{{ event.location_longitude }}'), {{ event.reach }});
+</script>
+
+{% endblock %}

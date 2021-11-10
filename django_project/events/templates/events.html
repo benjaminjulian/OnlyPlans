@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+<!-- XDSoft DateTimePicker -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
+
+<h2>Vista nýjan atburð</h2>
+<form method="POST">
+     {% csrf_token %}
+    {{form.as_p}}
+    Veldu staðsetningu á þessu korti / <a href="#" onclick="huntDown();">finna núverandi staðsetningu</a>
+    <br>
+    <div style="width: 400px; height: 400px;" id="osm-map"></div>
+    <br><br>
+    <button>Skrá</button>
+</form>
+
+<script>
+    el_lat = document.getElementById('id_location_latitude');
+    el_lon = document.getElementById('id_location_longitude');
+    el_reach = document.getElementById('id_reach');
+
+    el_lat.style.display = 'none';
+    el_lon.style.display = 'none';
+    el_reach.style.display = 'none';
+    
+    var element = document.getElementById('osm-map');
+    var map = L.map(element);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OSM</a>'
+    }).addTo(map);
+    map.setView(L.latLng('64.15', '-21.85'), 10);
+    tracer();
+
+    function centerMap(position) {
+        target = L.latLng(position.coords.latitude, position.coords.longitude);
+        map.setView(target, 18);
+    }
+
+    function huntDown() {
+        navigator.geolocation.getCurrentPosition(centerMap);
+    }
+
+    function tracer() {
+        loc = map.getCenter();
+        el_reach.value = map.getZoom();
+        el_lat.value = loc.lat;
+        el_lon.value = loc.lng;
+
+        setTimeout("tracer();",200)
+    }
+
+    $(function () {
+      $("#id_when").datetimepicker({
+        format: 'Y/m/d H:i',
+      });
+    });
+  </script>
+{% endblock %} 
