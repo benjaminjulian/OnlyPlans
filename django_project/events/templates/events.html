@@ -14,7 +14,8 @@
 <form method="POST">
      {% csrf_token %}
     {{form.as_p}}
-    Veldu staðsetningu á þessu korti / <a href="#" onclick="huntDown();">finna núverandi staðsetningu</a>
+    <h3>Veldu staðsetningu</h3>
+    <span class="functiontext"><a href="#" onclick="huntDown();">finna núverandi staðsetningu</a></span>
     <br>
     <div style="width: 400px; height: 400px;" id="osm-map"></div>
     <br><br>

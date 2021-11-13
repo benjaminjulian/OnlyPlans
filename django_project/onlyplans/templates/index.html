@@ -2,20 +2,42 @@
 
     {% block content %} 
         {% if user.is_authenticated %}
-            <p>Hæ, <a href="accounts/{{ user.username }}">{{  name }}</a>!</p>
-            <p>Vilt þú <a href="events">skrá nýjan atburð</a>?</p>
+            <p>Hæ, <a href="accounts/{{ user.username }}">{{  name }}</a>! <a href="events">Smelltu hér</a> til að skrá nýjan atburð.</p>
+        {% endif %}
             {% if plans|length > 0 %}
-                <h4>Komandi atburðir:</h4>
-                <ul>
+                <h2 class="nomargin">Komandi atburðir</h2>
+                <p class="firstpara indent"><span id="distancebutton" class="functionbutton"><a href="#" onclick="seeDistances()">sjá fjarlægðir</a></span></p>
+                <ul class="eventlist">
                 {% for plan in plans %}
-                    <li><a href="events/{{ plan.id }}">{{ plan.title }}</a> - <small><em>
-                        {{ plan.when|date:'d. m. k\l. H:i' }}</em></small></li>
+                    <li>
+                        <a href="events/{{ plan.id }}">{{ plan.title }}</a>
+                        <span class="distancebox hidden"><div>{{ plan.location_latitude }}</div><div>{{ plan.location_longitude }}</div></span><span class="datetag small-info">
+                        {{ plan.when|date:'d. m. k\l. H:i' }}</span><span class="hidden">{{ plan.when|date:'Y-m-d\TH:i:s\Z' }}</span>
+                    </li>
                 {% endfor %}
             {% else %}
                 <p><strong>Engin plön skráð!</strong></p>
-                <a href="events">Skráðu nýtt plan hér.</a>
+                <a href="/events">Skráðu nýtt plan hér.</a>
             {% endif %}
-        {% else %}
-                Innskráningu, takk!
-        {% endif %}
+<script>
+    function findDists(position) {
+        var els = document.getElementsByClassName("distancebox");
+        for (var i = 0; i < els.length; i++) {
+            box = els.item(i);
+            var lat = 1*box.getElementsByTagName('div')[0].innerText;
+            var lon = 1*box.getElementsByTagName('div')[1].innerText;
+
+            d = mDist(lat, lon, position.coords.latitude, position.coords.longitude);
+
+            d = Math.round(d/100)/10;
+
+            box.innerHTML = d + "km";
+            box.className = "distancebox";
+        }
+    }
+
+    function seeDistances() {
+        navigator.geolocation.getCurrentPosition(findDists);
+    }
+</script>
     {% endblock %} 

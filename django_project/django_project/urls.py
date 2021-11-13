@@ -21,5 +21,5 @@ urlpatterns = [
     path('', include('onlyplans.urls')),
     path('accounts/',include('accounts.urls')),
     path('events/', include('events.urls')),
-    path('friends/', include('friends.urls'))
+    path('user/', include('friends.urls')),
 ]

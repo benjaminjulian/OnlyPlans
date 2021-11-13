@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+    {% block content %} 
+        {% if user.is_authenticated %}
+            <h2>{{  name }}</h2>
+            {% if requests|length > 0 %}
+                <h4>Vinabeiðnir:</h4>
+                <ul class="friendlist requests">
+                {% for f_request in requests %}
+                    <li>
+                        <a href="/user/{{ f_request.from_user.username }}">
+                            {% if f_request.from_user.first_name or f_request.from_user.last_name %}
+                                {{ f_request.from_user.get_full_name }}
+                            {% else %}
+                                {{ f_request.from_user.username }}
+                            {% endif %}
+                        </a>
+                         - 
+                        <a href="accept/{{ f_request.id }}">samþykkja</a>
+                    </li>
+                {% endfor %}
+            {% endif %}
+            {% if friends|length > 0 %}
+                <h4>Vinir mínir:</h4>
+                <ul class="friendlist friends">
+                {% for friend in friends %}
+                    <li><a href="/user/{{ friend.username }}">{{ friend.username }}</a>
+                {% endfor %}
+            {% else %}
+                <p>Þú hefur ekki skráð neina vini, en getur séð opna atburði á <a href="/">forsíðunni</a>.</p>
+            {% endif %}
+        {% else %}
+                Innskráningu, takk!
+        {% endif %}
+    {% endblock %} 

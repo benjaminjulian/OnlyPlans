@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+    {% block content %} 
+        {% if user.is_authenticated %}
+            <h2>{{  person_name }}</h2>
+            {% if friend_request.request_received %}
+                <p>{{ person_name }} hefur sent vinabeiðni. <a href="accept/{{ friend_request.f_request.id }}">Samþykkja</a>.</p>
+            {% elif friend_request.request_sent %}
+                <p>Þú hefur sent vinabeiðni. <a href="cancelrequest/{{ friend_request.f_request.id }}">Hætta við</a>.</p>
+            {% elif are_friends %}
+                <p>Þið eruð vinir. <a href="unfriend/{{ person_username }}">Afskrá.</a></p>
+            {% else %}
+                <p>Þið eruð ekki vinir. <a href="friend/{{ person_username }}">Biðja um vináttu.</a></p>
+            {% endif %}
+            <p><a href="/">Til baka</a></p>
+        {% else %}
+                Innskráningu, takk!
+        {% endif %}
+    {% endblock %} 

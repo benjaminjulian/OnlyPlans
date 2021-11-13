@@ -4,12 +4,12 @@
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
 
+<span class="authorbox"><a href="/user/{{ event.owner }}">{{ owner }}</a> kynnir:</span>
 <h2>{{ event.title }}</h2>
-<small><em><a href="/friends/{{ event.owner }}">{{ event.owner }}</a></em></small>
-<p>{{ event.when|date:'d. m. k\l\ukk\a\n H:i' }}</p>
+<p class="datetag indent">{{ event.when|date:'d. m. k\l\ukk\a\n H:i' }}</p><span class="hidden">{{ event.when|date:'Y-m-d\TH:i:s\Z' }}</span>
 <br>
 <div style="width: 400px; height: 400px;" id="osm-map"></div>
-
+<p><a href="/">Til baka</a></p>
 <script>
     var element = document.getElementById('osm-map');
     var map = L.map(element);

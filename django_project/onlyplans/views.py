@@ -1,23 +1,44 @@
 from django.shortcuts import render, HttpResponseRedirect
-from onlyplans.models import Profile
-from django.db import models
-from onlyplans.forms import FriendMgmtForm
-from django.contrib.auth.decorators import login_required
 from onlyplans.models import OnlyPlan
 from datetime import datetime, timedelta
-from django.contrib.auth.models import User
 from friendship.models import Friend, Follow, Block
+from django.contrib.auth.models import User
 
 # Create your views here.
 def index(request):
+    var_from = datetime.now()
+    var_to = var_from + timedelta(days=7)
+
+    plans = OnlyPlan.objects.filter(when__range=[var_from, var_to]).order_by("when")
+
+    excludes = []
+
+    for plan in plans:
+        event_owner_qs = User.objects.filter(username=plan.owner)
+        if event_owner_qs:
+            event_owner = event_owner_qs[0]
+
+            can_see_event = False
+            if not plan.friendsonly:
+                can_see_event = True
+            elif Friend.objects.are_friends(request.user, event_owner):
+                can_see_event = True
+            elif event_owner == request.user:
+                can_see_event = True
+            
+            if not can_see_event:
+                excludes.append(plan.id)
+    
+    plans = plans.exclude(id__in=excludes)
+
     if request.user.is_authenticated:
-        var_from = datetime.now()
-        var_to = var_from + timedelta(days=7)
-        plans = OnlyPlan.objects.filter(when__range=[var_from, var_to]).order_by("when")
         if request.user.get_full_name() != "":
-            context = { 'name': request.user.get_full_name(), 'plans': plans }
+            name = request.user.get_full_name()
         else:
-            context = { 'name': request.user.username, 'plans': plans }
-        return render(request, "index.html", context)
+            name = request.user.username
     else:
-        return HttpResponseRedirect('/accounts/')
+        name = ''
+
+    context = { 'name': name, 'plans': plans }
+
+    return render(request, "index.html", context)

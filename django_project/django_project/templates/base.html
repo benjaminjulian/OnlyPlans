@@ -5,11 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>OnlyPlans</title>
+    <style>
+        body {
+            width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 15px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+        }
+        a {
+            color: black;
+        }
+        a.nostyle {
+            text-decoration: none;
+        }
+        .functionbutton {
+            font-size: 75%;
+        }
+        .hidden {
+            display: none;
+        }
+        .distancebox {
+            font-size: 85%;
+            margin-right: 5px;
+            color: #1b213a;
+        }
+        .small-info {
+            font-style: italic;
+            font-size: 75%;
+            color: #571e74;
+        }
+        .distancebox > div {
+            display: none;
+        }
+        .authorbox {
+            
+        }
+        h1 {
+            color: #ff62a4;
+            border-bottom: 1px solid #ff73ad;
+            text-decoration: none;
+        }
+        h2 {
+            text-indent: 1em;
+        }
+        h2.nomargin {
+            margin-bottom: 0px;
+        }
+        p.firstpara {
+            margin-top: 0px;
+        }
+        .indent {
+            text-indent: 2em;
+        }
+        ul {
+            padding: 0;
+        }
+        li {
+            list-style-type: none;
+            padding: 15px 0px;
+        }
+    </style>
 </head>
 <body>
-    <h1>OnlyPlans</h1>
+    <a class="nostyle" href="/"><h1>OnlyPlans</h1></a>
+    <div id="content">
     {% block content %}
     Heimasíða!
     {% endblock %}
+    </div>
+<script>
+    dateFix();
+
+    function mDist(lat1, lon1, lat2, lon2) {
+        let earthRadiusM = 6371000;
+        
+        let dLat = degreesToRadians(lat2-lat1);
+        let dLon = degreesToRadians(lon2-lon1);
+        
+        lat1 = degreesToRadians(lat1);
+        lat2 = degreesToRadians(lat2);
+        
+        let a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        return earthRadiusM * c;
+    }
+    function degreesToRadians(degrees) {
+        return degrees * 3.14 / 180;
+    }
+
+    function dateFix() {
+        var els = document.getElementsByClassName("datetag");
+        var now = new Date();
+        var tomorrow = new Date();
+        tomorrow.setDate(now.getDate() + 1);
+
+        for (var i = 0; i < els.length; i++) {
+            el = els.item(i);
+            var dt_str = el.nextSibling.innerHTML;
+            dt = new Date(dt_str);
+            
+
+            print_str = "";
+
+            if (dt.getMonth() == now.getMonth() && dt.getYear() == now.getYear()) {
+                if (dt.getDay() == now.getDay()) {
+                    print_str = "í dag";
+                } else if (dt.getDay() == tomorrow.getDay()) {
+                    print_str = "á morgun";
+                }
+            }
+
+            if (print_str !== "") {
+                print_str += " klukkan " + dt.getHours().toString() + ":" + String(dt.getMinutes()).padStart(2, "0");
+                el.innerHTML = print_str;
+            }
+        }
+    }
+</script>
 </body>
 </html>
