@@ -8,7 +8,8 @@
                 <h4>Komandi atburðir:</h4>
                 <ul>
                 {% for plan in plans %}
-                    <li><a href="events/{{ plan.id }}">{{ plan.title }}</a> - <small><em>{{ plan.when }}</em></small></li>
+                    <li><a href="events/{{ plan.id }}">{{ plan.title }}</a> - <small><em>
+                        {{ plan.when|date:'d. m. k\l. H:i' }}</em></small></li>
                 {% endfor %}
             {% else %}
                 <p><strong>Engin plön skráð!</strong></p>

@@ -5,7 +5,8 @@
 <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
 
 <h2>{{ event.title }}</h2>
-{{ event.when }}
+<small><em><a href="/friends/{{ event.owner }}">{{ event.owner }}</a></em></small>
+<p>{{ event.when|date:'d. m. k\l\ukk\a\n H:i' }}</p>
 <br>
 <div style="width: 400px; height: 400px;" id="osm-map"></div>
 
