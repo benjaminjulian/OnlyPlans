@@ -10,7 +10,7 @@ class storeEventForm(ModelForm):
     reach = forms.IntegerField(max_value=30, min_value=0, label="")
     when = forms.DateTimeField(label="Tímasetning", input_formats=['%Y/%m/%d %H:%M'])
     duration = forms.ChoiceField(choices=(('1', 'eitt augnablik'), ('10', 'smá stund'), ('30', 'hálftíma'), ('60', 'klukkutíma'), ('240', 'nokkra klukkutíma'), ('360', 'hálfan dag'), ('1440', 'sólarhring'), ('2880', 'tvo daga'), ('10000', 'viku')), label="Lengd")
-    friendsonly = forms.BooleanField(label="Bara fyrir vini")
+    friendsonly = forms.BooleanField(label="Bara fyrir vini", required=False)
 
     def clean_title(self):
         data = self.cleaned_data['title']

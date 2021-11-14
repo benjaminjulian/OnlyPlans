@@ -4,8 +4,9 @@
              <a href="{% url 'logout' %}">Skrá mig út</a>
 
         {% else %}
-            <a href="{% url 'login_url' %}">Skrá mig inn</a>
-            <br>
-            <a href="{% url 'register_url' %}">Nýskráning</a>
+            <ul>
+                <li><a href="{% url 'login_url' %}">Skrá mig inn</a></li>
+                <li><a href="{% url 'register_url' %}">Nýskráning</a></li>
+            </ul>
         {% endif %}
     {% endblock %} 

@@ -6,17 +6,20 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def register(request):
-    if request.method == 'POST':
-        form = storeEventForm(request.POST)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = storeEventForm(request.POST)
 
-        if form.is_valid():
-            event = form.save(commit=False)
-            event.owner = request.user
-            event.save()
-            return redirect('/')
+            if form.is_valid():
+                event = form.save(commit=False)
+                event.owner = request.user
+                event.save()
+                return redirect('/')
+        else:
+            form = storeEventForm()
+        return render(request, 'events.html', {'form': form})
     else:
-        form = storeEventForm()
-    return render(request, 'events.html', {'form': form})
+        return HttpResponseRedirect('/accounts/')
 
 def display(request, id):
     event_qs = OnlyPlan.objects.filter(id=id)

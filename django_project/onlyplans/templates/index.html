@@ -17,7 +17,9 @@
                 {% endfor %}
             {% else %}
                 <p><strong>Engin plön skráð!</strong></p>
-                <a href="/events">Skráðu nýtt plan hér.</a>
+            {% endif %}
+            {% if not user.is_authenticated %}
+                <a href="/accounts">Innskráning</a>
             {% endif %}
 <script>
     function findDists(position) {

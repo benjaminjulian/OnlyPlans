@@ -19,7 +19,9 @@ def index(request):
             event_owner = event_owner_qs[0]
 
             can_see_event = False
-            if not plan.friendsonly:
+            if not request.user.is_authenticated:
+                can_see_event = False
+            elif not plan.friendsonly:
                 can_see_event = True
             elif Friend.objects.are_friends(request.user, event_owner):
                 can_see_event = True
